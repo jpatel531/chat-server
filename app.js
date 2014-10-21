@@ -10,7 +10,10 @@ var app = express();
 // Database
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/pusher_chat');
+
+var mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/pusher_chat'
+
+mongoose.connect(mongoUri);
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
