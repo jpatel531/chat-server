@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 exports.schema = messageSchema = mongoose.Schema({
 	from: String,
 	body: String,
-	timeStamp: Date
+	timestamp: Date
 });
 
 exports.model = mongoose.model('Message', messageSchema);

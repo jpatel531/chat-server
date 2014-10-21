@@ -7,31 +7,34 @@ var pusher = require('../config/pusherConfig');
 
 /* GET home page. */
 router.post('/:firstUser/:secondUser/messages', function(req, res) {
+	console.log(req.body);
+	var ids = [req.params.firstUser, req.params.secondUser];
+	var path = ids.join("/");
+
+	Chat.findOne({path: path}, function(err, chat){
+		chat.messages.push(req.body)
+		chat.save(function(err, instance){
+			console.log(instance);
+			pusher.trigger('chat-channel', 'new-message', req.body);
+			res.json({success:200})
+		});
+	});
+});
+
+
+router.get('/:firstUser/:secondUser/messages', function(req, res) {
 
 	var ids = [req.params.firstUser, req.params.secondUser];
-	// console.log(users);
+	var path = ids.join("/");
 
-	// User.find({_id: {$in: ids}}, function(err, users){
-	// 	console.log(users);
-	// 	Chat.findOne({users: users}, function(err, chat){
-	// 		console.log(chat);
-	// 	});
-	// });
+	Chat.findOne({path: path}, function(err, chat){
+		
+		res.json(chat.messages);
 
-
-	// Chat.findOne({users: {$in: users}}, function(err, chat){
-	// 	if (err) throw err ;
-	// 	chat.messages.push(req.body)
-	// 	chat.save(function(err, instance){
-	// 		console.log(instance);
-	// 		pusher.trigger('chat-channel', 'new-message', req.body);
-	// 		res.json({success:200})
-	// 	});
-	// });
-
-
-
+	});
 });
+
+
 
 router.post('/new', function(req, res){
 	var emails = req.body.users
