@@ -25,8 +25,22 @@ router.post('/new_signup', function(req, res) {
 router.post('/auth', function(req, res){
 	var socketId = req.body.socket_id;
 	var channel = req.body.channel_name;
-	console.log(currentUser)
-	var auth = pusher.authenticate(socketId, channel, currentUser);
+	// console.log(currentUser)
+
+	var presenceData = {
+		user_id: currentUser.user_id,
+		user_info: {
+			nickname: currentUser.nickname,
+			email: currentUser.email
+		}
+	}
+
+	// var pusherUser = {}
+	// pusherUser.user_id = currentUser.user_id
+	// pusherUser.user_info = {email: currentUser.email, nickname: currentUser.nickname}
+
+	console.log(presenceData)
+	var auth = pusher.authenticate(socketId, channel, presenceData);
 	res.send(auth);
 });
 
