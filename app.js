@@ -38,7 +38,7 @@ initPassport(passport);
 
 var routes = require('./routes/index');
 var users = require('./routes/users')(passport);
-var messages = require('./routes/messages');
+var chat = require('./routes/chat');
 var presence = require('./routes/presence');
 
 // view engine setup
@@ -64,7 +64,7 @@ app.use(function(req, res, next){
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/messages', messages);
+app.use('/chat', chat);
 app.use('/presence', presence);
 
 // catch 404 and forward to error handler
